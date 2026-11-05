@@ -1,0 +1,6 @@
+nimcache/
+build/
+*.exe
+*.dll
+*.so
+*.dylib
