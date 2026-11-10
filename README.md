@@ -24,8 +24,24 @@ agent loop. It includes the native agent loop, context compaction, memory store,
 path policy, checkpoint allowlist, tool-call parsing, and opt-in tool selection,
 PII redaction, structured output, and call limits.
 
-The Core does not call Go or another language runtime. Provider adapters and
-plugin hosts remain outside the declared Core scope.
+The Core does not call Go or another language runtime. It includes an optional
+OpenAI-compatible model adapter; other provider adapters and plugin hosts remain
+outside the declared Core scope.
+
+## OpenAI-Compatible Model
+
+```nim
+let adapter = newOpenAICompatible(
+  baseUrl = "https://api.openai.com/v1",
+  model = "gpt-4o-mini",
+  apiKey = getEnv("PRAXO_API_KEY"),
+)
+let model = openaiModel(adapter)
+let result = runAgent(newAgentOptions(model), newSession("s1"), "Hi")
+```
+
+The adapter uses non-streaming `POST /chat/completions`, maps tool calls and
+usage, and accepts an injected transport for deterministic tests.
 
 ## API
 
